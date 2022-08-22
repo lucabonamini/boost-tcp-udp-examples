@@ -1,6 +1,6 @@
-icmake_minimum_required(VERSION 3.15)
+cmake_minimum_required(VERSION 3.15)
 
-project(template_repository)
+project(boost-tcp-udp-examples)
 include(cmake/StandardProjectSettings.cmake)
 include(cmake/PreventInSourceBuilds.cmake)
 
@@ -24,12 +24,24 @@ include(cmake/StaticAnalyzers.cmake)
 
 option(BUILD_SHARED_LIBS "Enable compilation of shared libraries" OFF)
 
-function(build_executable name)
+find_package(Boost REQUIRED COMPONENTS system thread)
+
+function(CompileExecutable name)
   add_executable(${name} src/${name}.cpp)
   target_include_directories(${name}
     PRIVATE
       $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
       $<INSTALL_INTERFACE:${CMAKE_INSTALL_PREFIX}/include>
   )
+  target_link_libraries(${name}
+    PRIVATE
+      ${Boost_LIBRARIES}
+  )
   target_compile_features(${name} PRIVATE cxx_std_17)
 endfunction()
+
+CompileExecutable("simple_udp_sync_server")
+CompileExecutable("simple_udp_sync_client")
+CompileExecutable("simple_udp_async_server")
+CompileExecutable("simple_tcp_sync_server")
+CompileExecutable("simple_tcp_sync_client")

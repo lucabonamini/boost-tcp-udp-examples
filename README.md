@@ -1,5 +1,5 @@
-# template_repository
-A templare repository for a C++ project
+# boost-tcp-udp-examples
+A collection of Boost.Asio simple examples
 
 ## Dependencies
 
